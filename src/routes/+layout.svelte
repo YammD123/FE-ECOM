@@ -3,11 +3,21 @@
 	import '../app.css';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import { page } from '$app/state';
+	import Navbar from '../components/Navbar.svelte';
 
-	if (browser && localStorage.getItem('token')===null) {
+	if (browser && localStorage.getItem('token') === null) {
 		goto('/user/login');
 	}
+
+	let { children } = $props();
 </script>
 
-<Toaster position="top-right" richColors />
-<slot></slot>
+{#if page.url.pathname === '/user/login' || page.url.pathname === '/user/register'}
+	<Toaster position="top-right" richColors />
+	{@render children()}
+	{:else}
+	<Toaster position="top-right" richColors />
+	<Navbar/>
+	{@render children()}
+{/if}

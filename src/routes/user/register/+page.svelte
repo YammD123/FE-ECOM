@@ -5,6 +5,7 @@
 	import { fade } from 'svelte/transition';
 	import { toast } from 'svelte-sonner';
 	import { PUBLIC_API_URL_BE } from '$env/static/public';
+	import { goto } from '$app/navigation';
 
 
 	let newUser = $state({userName:"" , email:"" , password:""}) 
@@ -38,6 +39,7 @@
 				return
 			}
 			toast.success("Register Berhasil")
+			goto('/user/login')
 			console.log(newUser);
 		} catch (error) {
 			toast.error("Register Failed")
