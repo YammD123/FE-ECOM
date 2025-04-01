@@ -55,7 +55,7 @@
 	}
 </script>
 
-<main class="text-white bg-black/95" >
+<main class="text-black bg-white">
 	<div class="flex h-screen w-full" transition:fade={{ duration: 500 }}>
 		<img
 			class="h-full w-1/2 object-cover"
@@ -71,14 +71,14 @@
 				<form onsubmit={login} class="mt-8 flex w-96 flex-col gap-4">
 					<Label for="email">Email</Label>
 					<Input
-						class="border bg-black text-white focus:border-transparent focus:outline-none focus:ring-0"
+						class="border bg-white text-black focus:border-2"
 						type="email"
 						placeholder="Enter your Email"
 						bind:value={loginUser.email}
 					/>
 					<Label for="password">Password</Label>
 					<Input
-						class="border bg-black text-white focus:border-transparent focus:outline-none focus:ring-0"
+						class="border bg-white text-black focus:border-2"
 						type="password"
 						placeholder="Enter your Password"
 						bind:value={loginUser.password}

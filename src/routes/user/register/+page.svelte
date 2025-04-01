@@ -48,33 +48,34 @@
 
 </script>
 
-<main class="text-white bg-black/95" >
+
+<main class="text-black bg-white" >
 	<div class="flex h-screen w-full" transition:fade={{ duration: 500 }}>
 
 		<div class="flex w-1/2 flex-col items-center justify-center">
 			<div>
 				<div class="flex flex-col gap-4 text-center">
 					<h1 class="text-3xl font-semibold">Register Account</h1>
-					<h3>Enter your User Name , Emal and Password to register</h3>
+					<h3>Enter your User Name , Email and Password to register</h3>
 				</div>
 				<form onsubmit={register} class="mt-8 flex w-96 flex-col gap-4">
 					<Label for="email">User Name</Label>
 					<Input
-						class="border bg-black text-white focus:border-transparent focus:outline-none focus:ring-0"
+						class="border focus:border-2  bg-white text-black "
 						type="text"
 						placeholder="Enter your User Name"
 						bind:value={newUser.userName}
 					/>
 					<Label for="email">Email</Label>
 					<Input
-						class="border bg-black text-white focus:border-transparent focus:outline-none focus:ring-0"
+						class="border bg-white text-black focus:border-2"
 						type="email"
 						placeholder="Enter your Email"
 						bind:value={newUser.email}
 					/>
 					<Label for="password">Password</Label>
 					<Input
-						class="border bg-black text-white focus:border-transparent focus:outline-none focus:ring-0"
+						class="border bg-white text-black focus:border-2"
 						type="password"
 						placeholder="Enter your Password"
 						bind:value={newUser.password}
