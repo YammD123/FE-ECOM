@@ -58,7 +58,7 @@
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger>
 							<Avatar.Root class="w-12 h-12">
-								<Avatar.Image  src={data?.data?.image_profile} alt="@shadcn" />
+								<Avatar.Image  src={data?.data?.profile_image} alt="@shadcn" />
 								<Avatar.Fallback>CN</Avatar.Fallback>
 							</Avatar.Root>
 					</DropdownMenu.Trigger>

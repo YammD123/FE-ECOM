@@ -42,6 +42,7 @@
 
 
 			const data = await res.json()
+			localStorage.setItem('role',data.data.role)
 			localStorage.setItem('token',data.data.token)
 			if(data.data.role === "USER"){
 				goto('/')
