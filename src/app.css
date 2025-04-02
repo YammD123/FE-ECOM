@@ -7,6 +7,13 @@ input:focus {
 	box-shadow: none !important;
 }
 
+/* Di global.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body{
   background-color: aliceblue;
 }

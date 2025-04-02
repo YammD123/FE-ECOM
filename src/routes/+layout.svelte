@@ -13,7 +13,7 @@
 	let { children } = $props();
 </script>
 
-{#if page.url.pathname === '/user/login' || page.url.pathname === '/user/register'}
+{#if page.url.pathname === '/user/login' || page.url.pathname === '/user/register' || page.url.pathname === '/dashboard/user'}
 	<Toaster position="top-right" richColors />
 	{@render children()}
 	{:else}
