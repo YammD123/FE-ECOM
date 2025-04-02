@@ -60,9 +60,9 @@
 					Authorization: `Bearer ${token}`
 				},
 				method: 'PATCH',
-				body: formData
+				body: formData,
 			});
-            if(res.status === 499){
+            if(res.status === 500){
                 toast.error('Gagal update profile silakan coba lagi')
                 return
             }
