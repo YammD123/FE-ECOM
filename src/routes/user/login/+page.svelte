@@ -47,7 +47,7 @@
 			if(data.data.role === "USER"){
 				goto('/')
 			}else{
-				goto('/dashboard')
+				goto('/dashboard/user')
 			}
 			toast.success("Login berhasil")
 		} catch (error) {

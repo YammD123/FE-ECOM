@@ -9,9 +9,11 @@
 	import { goto } from '$app/navigation';
 
     let token : string | null = null
+    let role : string | null = $state(null)
 
     onMount(()=>{
         token = localStorage.getItem('token')
+        role = localStorage.getItem('role')
     })
 
     async function logOut(){
@@ -53,7 +55,14 @@
 <nav class="bg-gradient-to-b from-orange-500 to-red-600/90 text-white">
 	<div class="flex items-center justify-between p-2">
 		<h1><a href="/" class="text-2xl font-bold">YammD</a></h1>
-		<ul>
+		<ul class="flex items-center gap-4">
+            <li>
+                {#if role == 'ADMIN'}
+                    <Button>
+                        <a href="/dashboard/user">Dashboard</a>
+                    </Button>
+                {/if}
+            </li>
 			<li>
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger>

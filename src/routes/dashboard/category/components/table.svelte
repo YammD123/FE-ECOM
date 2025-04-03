@@ -8,59 +8,58 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { toast } from 'svelte-sonner';
     import { Input } from '$lib/components/ui/input/index.js';
+    
 
-    //handle search
+    let data: any = $state([]);
     let filteredData : any  = $state([])
-
-	let data: any = $state([]);
-	async function getUserData() {
-		const res = await fetch(`${PUBLIC_API_URL_BE}/user`);
-		data = await res.json();
+    let page : number = $state(1)
+    let totalPagePagination : number = $state(1)
+    async function getCategoryData(){
+        const res = await fetch(`${PUBLIC_API_URL_BE}/category?page=${page}`);
+        data = await res.json();
         filteredData = data.data
-		console.log(data);
-	}
-
-	onMount(() => {
-		getUserData();
-	});
+        totalPagePagination = data.totalPage
+    }
 
 
-    async function deleteUser(id : string){
+    async function deleteCategory(id: string){
         try {
-
-            await fetch(`${PUBLIC_API_URL_BE}/user/${id}`,{
+            const res = await fetch(`${PUBLIC_API_URL_BE}/category/${id}`,{
                 method:'DELETE'
             })
-            toast.success('Berhasil menghapus user')
+            if(!res.ok){
+                toast.error('Gagal menghapus kategori silakan coba lagi')
+                return
+            }
+            toast.success('Berhasil menghapus kategori')
             location.reload()
         } catch (error) {
-            
+            toast.error('error')
         }
     }
-    
 
-    let searchUser = $state('')
+    $effect(() => {
+        getCategoryData();
+    })
+    let searchCategory = $state('')
     async function handleSearch(){
-        filteredData = data.data.filter((user : any) => user.user_name.toLowerCase().includes(searchUser.toLowerCase()))
+        filteredData = data.data.filter((category: any) => category.category_name.toLowerCase().includes(searchCategory.toLowerCase()))
     }
-   $effect(() => {
-       handleSearch()
-   })
-    
-</script>  
+    $effect(() => {
+        handleSearch();
+    })
+</script>
 
-<div class=" p-4">
-    <div class="flex justify-end p-6 border">
-        <Input bind:value={searchUser} class="w-1/3" placeholder="Search" />
+<main>
+    <div class="flex justify-end p-6 ">
+        <Input bind:value={searchCategory}  class="w-1/3" placeholder="Search" />
     </div>
 	<Table.Root class="w-full table-fixed border border-gray-300">
 		<Table.Caption>A list of your recent invoices.</Table.Caption>
 		<Table.Header>
 			<Table.Row>
-				<Table.Head class="w-[100px]">Profile</Table.Head>
-				<Table.Head class="w-1/5">User Name</Table.Head>
-				<Table.Head class="w-1/5">Role</Table.Head>
-				<Table.Head class="w-1/5 ">Email</Table.Head>
+				<Table.Head class="w-[100px]">Tanggal Buat</Table.Head>
+				<Table.Head class="w-1/5">Nama Kategori</Table.Head>
 				<Table.Head class="w-1/5 text-right"></Table.Head>
 			</Table.Row>
 		</Table.Header>
@@ -72,16 +71,11 @@
                     </Table.Cell>
                 </Table.Row>
             {:else}
-                {#each filteredData as user, index (index)}
+                {#each filteredData as category, index (index)}
                     <Table.Row>
-                        <Table.Cell>
-                            <Avatar.Root>
-                                <Avatar.Image src={user.profile_image} alt="Shadcn" />
-                            </Avatar.Root>
-                        </Table.Cell>
-                        <Table.Cell class="text-base">{user.user_name}</Table.Cell>
-                        <Table.Cell class="text-base">{user.role}</Table.Cell>
-                        <Table.Cell class="text-base">{user.email}</Table.Cell>
+                        
+                        <Table.Cell class="text-base">{category.createdAt}</Table.Cell>
+                        <Table.Cell class="text-base">{category.category_name}</Table.Cell>
                         <Table.Cell class="text-right">
                             <DropdownMenu.Root>
                                 <DropdownMenu.Trigger>
@@ -89,7 +83,7 @@
                                 </DropdownMenu.Trigger>
                                 <DropdownMenu.Content class="mx-6">
                                     <div class="flex">
-                                        <Button onclick={() => deleteUser(user.id)} class="w-full" variant="destructive">
+                                        <Button onclick={()=>deleteCategory(category.id)} class="w-full" variant="destructive">
                                             <Trash size={20} />
                                             Hapus
                                         </Button>
@@ -103,4 +97,8 @@
         </Table.Body>
         
 	</Table.Root>
-</div>
+    <div class="flex justify-end p-6 gap-3">
+        <Button disabled={page == totalPagePagination} onclick={() => page++} class="border-gray-300 border" variant="ghost">Next</Button>
+        <Button disabled={page == 1} onclick={() => page--} class="border-gray-300 border" variant="ghost">Previous</Button>
+    </div>
+</main>
