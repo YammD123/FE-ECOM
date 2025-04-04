@@ -11,8 +11,10 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 
 	let token: string | null = null;
+	let role: string | null = $state(null);
 	onMount(() => {
 		token = localStorage.getItem('token');
+		role = localStorage.getItem('role');
 	});
 	let data: any = $state({});
 	async function profile() {
@@ -66,7 +68,6 @@
                 toast.error('Gagal update profile silakan coba lagi')
                 return
             }
-			location.reload();
 			toast.success('Berhasil update profile');
 		} catch (error) {
 			toast.error('error');
@@ -80,7 +81,12 @@
 	<div class="flex h-[600px] justify-center">
 		<div class="m-4 flex w-[1000px] justify-between border border-gray-800/20 bg-white p-4">
 			<div class="font-sans text-black">
-				<h1 class="text-lg font-semibold">Profil Saya</h1>
+				{#if role === "ADMIN"}
+				<div class="text-lg italic font-medium border-b items-center">
+					{role}
+				</div>
+			{/if}
+				<h1 class="text-lg mt-2 font-semibold">Profil Saya</h1>
 				<p class="text-sm text-black/40">
 					Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun
 				</p>
@@ -114,6 +120,7 @@
 							>Simpan Perubahan</Button
 						>
 					</form>
+
 				</div>
 			</div>
 			<div class="flex flex-col p-16">
@@ -155,6 +162,7 @@
 					>
 				</form>
 			</div>
+
 		</div>
 	</div>
 </main>
