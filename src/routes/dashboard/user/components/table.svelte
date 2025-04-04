@@ -11,18 +11,20 @@
 
     //handle search
     let filteredData : any  = $state([])
-
+    let page : number = $state(1)
+    let totalPagePagination : number = $state(1)
 	let data: any = $state([]);
 	async function getUserData() {
-		const res = await fetch(`${PUBLIC_API_URL_BE}/user`);
+		const res = await fetch(`${PUBLIC_API_URL_BE}/user?page=${page}`);
 		data = await res.json();
+        totalPagePagination = data.totalPage
         filteredData = data.data
 		console.log(data);
 	}
 
-	onMount(() => {
-		getUserData();
-	});
+    $effect(() => {
+        getUserData();
+    })
 
 
     async function deleteUser(id : string){
@@ -103,4 +105,8 @@
         </Table.Body>
         
 	</Table.Root>
+    <div class="flex justify-end p-6 gap-3">
+        <Button disabled={page == totalPagePagination} onclick={() => page++} class="border-gray-300 border" variant="ghost">Next</Button>
+        <Button disabled={page == 1} onclick={() => page--} class="border-gray-300 border" variant="ghost">Previous</Button>
+    </div>
 </div>

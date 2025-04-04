@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { Ellipsis, Search, Trash } from '@lucide/svelte';
+	import { Edit, Ellipsis, Search, Trash } from '@lucide/svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { toast } from 'svelte-sonner';
     import { Input } from '$lib/components/ui/input/index.js';
@@ -82,10 +82,14 @@
                                     <Button variant="ghost"><Ellipsis size={20} /></Button>
                                 </DropdownMenu.Trigger>
                                 <DropdownMenu.Content class="mx-6">
-                                    <div class="flex">
+                                    <div class="flex flex-col gap-2">
                                         <Button onclick={()=>deleteCategory(category.id)} class="w-full" variant="destructive">
                                             <Trash size={20} />
                                             Hapus
+                                        </Button>
+                                        <Button class="w-full bg-green-600" >
+                                            <Edit size={20} />
+                                            Edit
                                         </Button>
                                     </div>
                                 </DropdownMenu.Content>
@@ -95,7 +99,6 @@
                 {/each}
             {/if}
         </Table.Body>
-        
 	</Table.Root>
     <div class="flex justify-end p-6 gap-3">
         <Button disabled={page == totalPagePagination} onclick={() => page++} class="border-gray-300 border" variant="ghost">Next</Button>
