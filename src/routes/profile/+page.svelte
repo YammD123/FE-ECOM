@@ -9,8 +9,9 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { toast } from 'svelte-sonner';
 	import { Label } from '$lib/components/ui/label/index.js';
+	import AddProduct from './components/add-product.svelte';
 
-	let token: string | null = null;
+	let token: string | null = $state(null);
 	let role: string | null = $state(null);
 	onMount(() => {
 		token = localStorage.getItem('token');
@@ -69,6 +70,7 @@
                 return
             }
 			toast.success('Berhasil update profile');
+			
 		} catch (error) {
 			toast.error('error');
 		} finally {
@@ -77,53 +79,49 @@
 	}
 </script>
 
-<main class="">
-	<div class="flex h-[600px] justify-center">
-		<div class="m-4 flex w-[1000px] justify-between border border-gray-800/20 bg-white p-4">
-			<div class="font-sans text-black">
+<main class="min-h-screen flex flex-col items-center">
+	<div class="flex justify-center w-full max-w-[1000px] h-[600px] mx-4 my-4">
+		<div class="flex flex-col md:flex-row w-[1000px] justify-between border border-gray-800/20 bg-white p-4">
+			<div class="font-sans text-black flex-1 p-2 md:border-r md:pr-6">
 				{#if role === "ADMIN"}
-				<div class="text-lg italic font-medium border-b items-center">
-					{role}
-				</div>
-			{/if}
-				<h1 class="text-lg mt-2 font-semibold">Profil Saya</h1>
-				<p class="text-sm text-black/40">
+					<div class="text-lg italic font-medium border-b mb-4">{role}</div>
+				{/if}
+				<h1 class="text-lg font-semibold">Profil Saya</h1>
+				<p class="text-sm text-black/40 mb-6">
 					Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun
 				</p>
-				<div class="mt-6 border-r">
-					<form class="flex flex-col gap-4">
-						<div class="flex items-center gap-8">
-							<Label class="w-32 text-right">User Name :</Label>
-							<input
-								class="h-9 w-1/2 border border-black/20 px-2 focus:outline-none focus:ring-0"
-								placeholder={data.data?.user_name}
-								type="text"
-							/>
-						</div>
-						<div class="flex items-center gap-8">
-							<Label class="w-32 text-right">Email :</Label>
-							<input
-								class="h-9 w-1/2 border border-black/20 px-2 focus:outline-none focus:ring-0"
-								placeholder={data.data?.email}
-								type="email"
-							/>
-						</div>
-						<div class="flex items-center gap-8">
-							<Label class="w-32 text-right">Password :</Label>
-							<input
-								class="h-9 w-1/2 border border-black/20 px-2 focus:outline-none focus:ring-0"
-								placeholder="********"
-								type="password"
-							/>
-						</div>
-						<Button type="submit" class="mt-4 w-32 rounded-sm bg-orange-600"
-							>Simpan Perubahan</Button
-						>
-					</form>
-
-				</div>
+				<form class="flex flex-col gap-4">
+					<div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+						<Label class="w-full md:w-32 text-left md:text-right">User Name :</Label>
+						<input
+							class="h-9 w-full md:w-1/2 border border-black/20 px-2 focus:outline-none focus:ring-0"
+							placeholder={data.data?.user_name}
+							type="text"
+						/>
+					</div>
+					<div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+						<Label class="w-full md:w-32 text-left md:text-right">Email :</Label>
+						<input
+							class="h-9 w-full md:w-1/2 border border-black/20 px-2 focus:outline-none focus:ring-0"
+							placeholder={data.data?.email}
+							type="email"
+						/>
+					</div>
+					<div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+						<Label class="w-full md:w-32 text-left md:text-right">Password :</Label>
+						<input
+							class="h-9 w-full md:w-1/2 border border-black/20 px-2 focus:outline-none focus:ring-0"
+							placeholder="********"
+							type="password"
+						/>
+					</div>
+					<Button type="submit" class="mt-4 w-32 rounded-sm bg-orange-600">
+						Simpan Perubahan
+					</Button>
+				</form>
 			</div>
-			<div class="flex flex-col p-16">
+
+			<div class="flex flex-col items-center justify-center p-4 md:p-16">
 				<form onsubmit={submitImage} class="flex flex-col items-center gap-4">
 					<Avatar.Root class="relative h-40 w-40">
 						{#if selectImage}
@@ -144,8 +142,6 @@
 						>
 							CN
 						</Avatar.Fallback>
-
-						<!-- Icon Upload -->
 						<div
 							class="absolute bottom-2 right-4 cursor-pointer rounded-full bg-white p-2 shadow-md"
 						>
@@ -157,12 +153,30 @@
 							/>
 						</div>
 					</Avatar.Root>
-					<Button disabled={loadingImage} type="submit" class="bg-orange-600 p-2"
-						>{loadingImage ? 'Loading...' : 'Save'}</Button
-					>
+					<Button disabled={loadingImage} type="submit" class="bg-orange-600 p-2">
+						{loadingImage ? 'Loading...' : 'Save'}
+					</Button>
 				</form>
 			</div>
-
 		</div>
 	</div>
+	<div class="flex flex-col justify-center w-full">
+		{#if token}
+		<AddProduct token={token} />
+	{:else}
+		<p class="text-center text-gray-500">Loading user token...</p>
+	{/if}
+	</div>
 </main>
+
+<style>
+	@media (max-width: 768px) {
+		/* Penyesuaian untuk layar kecil */
+		.h-\[600px\] {
+			height: auto;
+		}
+		.w-\[1000px\] {
+			width: 100%;
+		}
+	}
+</style>
