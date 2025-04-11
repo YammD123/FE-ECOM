@@ -50,9 +50,6 @@
 		data = await res.json();
 		console.log(data);
 	}
-	onMount(() => {
-		Fetchprofile();
-	});
 
 	//* Fetct order */
 	let orders: any = $state([]);
@@ -69,9 +66,7 @@
 		totalOrder = data?.data.length;
 		console.log(orders);
 	}
-	onMount(() => {
-		getOrder();
-	});
+
 
 	async function deleteOrder(productId: string) {
 		try {
@@ -116,9 +111,14 @@
 			console.error(error);
 		}
 	}
-	onMount(() => {
-		buyProduct();
-	});
+
+$effect(()=>{
+	if(token){
+	getOrder();
+	Fetchprofile();
+	buyProduct();
+	}
+})
 
 </script>
 

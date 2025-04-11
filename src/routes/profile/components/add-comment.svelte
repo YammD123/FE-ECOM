@@ -20,7 +20,6 @@
                     comment
                 })
             });
-
             toast.success('Ulasan berhasil ditambahkan');
             opened = false
         } catch (error) {
