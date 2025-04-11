@@ -39,8 +39,6 @@
 				toast.error("Password salah")
 				return
 			}
-
-
 			const data = await res.json()
 			localStorage.setItem('role',data.data.role)
 			localStorage.setItem('token',data.data.token)

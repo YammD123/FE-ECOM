@@ -4,12 +4,14 @@
 	import { on } from 'svelte/events';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import { ImagePlus } from '@lucide/svelte';
+	import { ImagePlus, MessageCircle } from '@lucide/svelte';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { toast } from 'svelte-sonner';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import AddProduct from './components/add-product.svelte';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import AddComment from './components/add-comment.svelte';
 
 	let token: string | null = $state(null);
 	let role: string | null = $state(null);
@@ -77,6 +79,22 @@
 			loadingImage = false;
 		}
 	}
+
+	let riwayatPembelian : any= $state([]);
+	async function getRiwayatPembelian() {
+		const res = await fetch(`${PUBLIC_API_URL_BE}/order/succes`, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		riwayatPembelian = await res.json();
+		console.log(riwayatPembelian);
+	}
+	onMount(() => {
+		getRiwayatPembelian();
+	})
+
+	let isOpen = $state(false);
 </script>
 
 <main class="min-h-screen flex flex-col items-center">
@@ -158,6 +176,35 @@
 					</Button>
 				</form>
 			</div>
+		</div>
+	</div>
+	<div>
+		<h1>Riwayat Pembelian</h1>
+		<div class="grid grid-cols-6 gap-4 py-5">
+			{#each riwayatPembelian.data as item, index (index)}
+			<div class="w-52 h-72 bg-white">
+				<img class="w-full h-56" src={item.product.product_image} alt="">
+				<div class="flex justify-between mt-3 ml-4">
+					<p class="text-xl text-gray-600 italic">{item.product.price}</p>
+					<Dialog.Root bind:open={isOpen}>
+						<Dialog.Trigger>
+							<Button variant="ghost">
+								<MessageCircle class="w-4 h-4 mr-2" />
+							</Button>
+						</Dialog.Trigger>
+						<Dialog.Content>
+							<Dialog.Title class="text-lg font-semibold text-gray-900">Ulasan</Dialog.Title>
+							<Dialog.Description class="text-gray-600">
+								Beri ulasan untuk produk ini. Komentar Anda sangat berarti!
+							</Dialog.Description>
+							{#if token}
+							<AddComment productId={item.product.id} bind:opened={isOpen} orderId={item.id} token={token} />
+							{/if}
+						</Dialog.Content>
+					</Dialog.Root>
+				</div>
+			</div>
+			{/each}
 		</div>
 	</div>
 	<div class="flex flex-col justify-center w-full">

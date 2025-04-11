@@ -17,7 +17,7 @@
 </script>
 
 <main class="flex flex-col items-center justify-center px-4 pt-16">
-	<div class="grid grid-cols-7">
+	<div class="grid grid-cols-7 gap-4">
 		{#each data.data as product, index (index)}
 			<a href={`/detail/${product.id}`} data-sveltekit-preload-data="hover">
 				<div class="group w-52">

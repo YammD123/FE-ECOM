@@ -68,9 +68,40 @@
 			<h1 class="text-xl md:text-2xl text-white font-serif">Payment</h1>
 		</div>
 	</div>
+	<div class="flex flex-col items-center justify-center mt-16 w-full max-w-7xl">
+		<h1 class="text-3xl italic text-gray-800 font-semibold">Ulasan</h1>
+		{#if data.comment.data.length == 0}
+			<p class="text-center text-gray-500 py-12 text-lg bg-gray-50 rounded-xl mt-6 w-full">
+				Belum ada ulasan yang ditambahkan.
+			</p>
+		{:else}
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full">
+				{#each data.comment.data as item, index (index)}
+					<div
+						class="flex flex-col bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition-shadow"
+					>
+						<div class="flex items-center gap-4">
+							<img
+								src={item.user.profile_image}
+								alt={item.user.user_name}
+								class="w-12 h-12 rounded-full object-cover border-2 border-orange-100"
+							/>
+							<div>
+								<h1 class="text-lg font-serif font-semibold text-gray-800">
+									{item.user.user_name}
+								</h1>
+								<p class="text-xs text-gray-400">Posted on {new Date().toLocaleDateString()}</p>
+							</div>
+						</div>
+						<p class="text-gray-600 text-sm mt-4 leading-relaxed">{item.comment}</p>
+					</div>
+				{/each}
+			</div>
+		{/if}
+	</div>
     <div>
         <h1 class="text-2xl italic text-black/70 font-semibold mt-10">Related Product</h1>
-        <div class="grid grid-cols-6 py-5">
+        <div class="grid grid-cols-6 gap-4 py-5">
             {#each data.category.data as product, index (index)}
             {#each product.product as item, index (index)}
 			<a data-sveltekit-preload-data="hover" href={`/detail/${item.id}`}>	

@@ -9,7 +9,11 @@ export async function load({ params, fetch }) {
         const resProd = await fetch(`${PUBLIC_API_URL_BE}/category/${product.data.category.category_name}`);
         const category = await resProd.json();
         console.log('Category:', category);
-        return{ product, category };
+
+        const resComment = await fetch(`${PUBLIC_API_URL_BE}/comment/${product.data.id}`);
+        const comment = await resComment.json();
+        console.log('Comment:', comment);
+        return{ product, category, comment };
     } catch (error) {
         console.error('Error fetching product:', error);
     }

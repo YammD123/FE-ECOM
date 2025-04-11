@@ -79,17 +79,47 @@
 				method: 'DELETE',
 				headers: {
 					Authorization: `Bearer ${token}`
-				},
+				}
 			});
-			if(res.status === 200){
+			if (res.status === 200) {
 				location.reload();
 				toast.success('Berhasil membatalkan order');
-				
 			}
-		} catch (error : any) {
+		} catch (error: any) {
 			throw new error('Gagal membatalkan order');
 		}
 	}
+
+	let tokenBuy: any = $state([]);
+	async function buyProduct(orderId?: string) {
+		try {
+			const res = await fetch(`${PUBLIC_API_URL_BE}/order/buy`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`
+				},
+				body: JSON.stringify({
+					productId: orderId
+				})
+			});
+			tokenBuy = await res.json();
+			if(tokenBuy.snapToken){
+				window.snap.pay(tokenBuy.snapToken, {
+				onSuccess: (result :any) => console.log('✅ Success', result),
+				onPending: (result :any) => console.log('⏳ Pending', result),
+				onError: (result :any) => console.error('❌ Error', result),
+				onClose: () => console.log('❎ User closed Snap')
+			});
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+	onMount(() => {
+		buyProduct();
+	});
+
 </script>
 
 <nav class="bg-gradient-to-b from-orange-500 to-red-600/90 text-white">
@@ -143,7 +173,7 @@
 										</div>
 										<Button
 											class="rounded bg-orange-500 px-2 py-1 text-xs text-white hover:bg-orange-600"
-											onclick={() => goto(`/product/${order.product.id}`)}
+											onclick={() => {buyProduct(order.product.id)}}
 										>
 											Buy Now
 										</Button>
