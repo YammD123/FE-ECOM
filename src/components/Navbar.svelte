@@ -9,13 +9,23 @@
 	import { goto } from '$app/navigation';
 	import { error } from '@sveltejs/kit';
 
-	let token: string | null = null;
-	let role: string | null = $state(null);
+	import { browser } from '$app/environment';
 
-	onMount(() => {
+let token: string | null = null;
+let role: string | null = $state(null);
+
+onMount(() => {
+	if (browser) {
 		token = localStorage.getItem('token');
 		role = localStorage.getItem('role');
-	});
+
+		if (token) {
+			console.log('Token:', token);
+			getOrder();
+			Fetchprofile();
+		}
+	}
+});
 
 	//* Logout function
 	async function logOut() {
@@ -58,12 +68,15 @@
 		const res = await fetch(`${PUBLIC_API_URL_BE}/order`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
-				'Cache-Control': 'no-store'
-			}
+				'Content-Type': 'application/json'
+			},
+			method:"GET"
 		});
 		const data = await res.json();
 		orders = data;
-		totalOrder = data?.data.length;
+		console.log('Response body:', data);
+
+		totalOrder = data?.data?.length??0;
 		console.log(orders);
 	}
 

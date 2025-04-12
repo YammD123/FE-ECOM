@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_API_URL_BE } from '$env/static/public';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { on } from 'svelte/events';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
@@ -11,7 +11,7 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import AddProduct from './components/add-product.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import AddComment from './components/add-comment.svelte';
+	import { Textarea } from '$lib/components/ui/textarea/index.js';
 
 	let token: string | null = $state(null);
 	let role: string | null = $state(null);
@@ -94,7 +94,30 @@
 		getRiwayatPembelian();
 	})
 
-	let isOpen = $state(false);
+	let isOpen= $state(false);
+
+
+	let comment = $state('');
+	async function addComment(productId: string, orderId: string): Promise<void> {
+        try {      
+            const res = await fetch(`${PUBLIC_API_URL_BE}/comment/${orderId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                method: 'POST',
+                body: JSON.stringify({
+                    productId: productId,
+                    comment
+                })
+            });
+            toast.success('Ulasan berhasil ditambahkan');
+			isOpen = false
+			await tick()
+        } catch (error) {
+            toast.error('Gagal menambah ulasan');
+        }
+	}
 </script>
 
 <main class="min-h-screen flex flex-col items-center">
@@ -186,7 +209,7 @@
 				<img class="w-full h-56" src={item.product.product_image} alt="">
 				<div class="flex justify-between mt-3 ml-4">
 					<p class="text-xl text-gray-600 italic">{item.product.price}</p>
-					<Dialog.Root bind:open={isOpen}>
+					<Dialog.Root>
 						<Dialog.Trigger>
 							<Button variant="ghost">
 								<MessageCircle class="w-4 h-4 mr-2" />
@@ -197,9 +220,23 @@
 							<Dialog.Description class="text-gray-600">
 								Beri ulasan untuk produk ini. Komentar Anda sangat berarti!
 							</Dialog.Description>
-							{#if token}
-							<AddComment productId={item.product.id} bind:opened={isOpen} orderId={item.id} token={token} />
-							{/if}
+							<div class="grid gap-4 py-4">
+								<div class="grid gap-2">
+									<Textarea
+										id="comment"
+										placeholder="Tulis ulasan Anda di sini..."
+										bind:value={comment}
+										class="min-h-[100px] resize-y border-orange-200 focus:border-orange-400 focus:ring-orange-400"
+									/>
+								</div>
+							</div>
+							<Button
+								class="bg-gradient-to-r from-orange-600 to-orange-400 text-white hover:from-orange-700 hover:to-orange-500"
+								onclick={() => addComment(item.product.id,item.id)}
+								disabled={!comment.trim()}
+							>
+								Kirim Ulasan
+							</Button>
 						</Dialog.Content>
 					</Dialog.Root>
 				</div>
