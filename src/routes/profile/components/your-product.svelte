@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+import { Button } from '$lib/components/ui/button/index.js';
+	import { Edit } from "@lucide/svelte";
+
     let {data} = $props()
 </script>
 
@@ -13,6 +17,7 @@
         <div class="grid grid-cols-6 gap-4">
             {#each data.data as items }
             <div class="w-52 h-72 bg-white">
+                <Button onclick={()=> goto(`/editing/${items.id}`)} variant="ghost" class=" top-2 bg-white"><Edit class="w-4 h-4" />Edit</Button>
                 <img class="w-full h-full rounded" src={items.product_image} alt="">
             </div>
             {/each}

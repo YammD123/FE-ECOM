@@ -1,13 +1,14 @@
 <script lang="ts">
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { CircleUser, LogOut, ShoppingBag } from '@lucide/svelte';
+	import { CircleUser, LogOut, Search, ShoppingBag } from '@lucide/svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { PUBLIC_API_URL_BE } from '$env/static/public';
 	import { toast } from 'svelte-sonner';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { error } from '@sveltejs/kit';
+	import  {Input} from '$lib/components/ui/input/index.js';
 
 	import { browser } from '$app/environment';
 
@@ -145,6 +146,14 @@ $effect(()=>{
 						<a href="/dashboard/user">Dashboard</a>
 					</Button>
 				{/if}
+			</li>
+			<li class="flex items-center gap-2">
+				<form class="flex items-center gap-2">
+					<Input class="text-black w-72" type="search" placeholder="Cari Produk" />
+					<Button variant="ghost">
+						<Search class="h-4 w-4" />
+					</Button>
+				</form>
 			</li>
 			<li>
 				<DropdownMenu.Root>

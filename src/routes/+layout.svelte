@@ -5,6 +5,7 @@
 	import { browser } from '$app/environment';
 	import { page } from '$app/state';
 	import Navbar from '../components/Navbar.svelte';
+	import Footer from '../components/Footer.svelte';
 
 	if (browser && localStorage.getItem('token') === null) {
 		goto('/user/login');
@@ -20,4 +21,5 @@
 	<Toaster position="top-right" richColors />
 	<Navbar/>
 	{@render children()}
+	<Footer/>
 {/if}
