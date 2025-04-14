@@ -12,7 +12,6 @@
 		token = localStorage.getItem('token');
 	});
 
-
 	async function orderProduct(productId: string){
 		try {	
 			const res = await fetch(`${PUBLIC_API_URL_BE}/order`,{
@@ -36,6 +35,32 @@
 			toast.error('Gagal menambah produk')
 		}
 	}
+
+	let tokenBuy: any = $state([]);
+	async function buyProduct(orderId?: string) {
+		try {
+			const res = await fetch(`${PUBLIC_API_URL_BE}/order/buy`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`
+				},body: JSON.stringify({
+					productId:orderId
+				})
+			})
+			tokenBuy = await res.json()
+			if(tokenBuy.snapToken){
+				window.snap.pay(tokenBuy.snapToken,{
+				onSuccess: (result :any) => console.log('✅ Success', result),
+				onPending: (result :any) => console.log('⏳ Pending', result),
+				onError: (result :any) => console.error('❌ Error', result),
+				onClose: () => console.log('❎ User closed Snap')
+				})
+			}
+		} catch (error) {
+			toast.error('gagal membeli product');
+		}
+	}
 </script>
 
 <main class="flex flex-col items-center justify-center px-4">
@@ -49,7 +74,7 @@
 				<p class="text-sm md:text-base">{data.product.data.description}</p>
 				<p class="text-xl md:text-2xl text-yellow-500 italic font-serif mt-4">Rp. {data.product.data.price.toLocaleString()}</p>
 				<div class="flex flex-col sm:flex-row gap-4 mt-8">
-					<Button class="bg-gradient-to-r from-orange-600 to-orange-400 w-full sm:w-auto" variant="default" size="lg" onclick={() => alert('Buy Now')}>Buy Now</Button>
+					<Button class="bg-gradient-to-r from-orange-600 to-orange-400 w-full sm:w-auto" variant="default" size="lg" onclick={() => {buyProduct(data.product.data.id)}}>Buy Now</Button>
 					<Button class="w-full sm:w-auto" variant="outline" size="lg" onclick={() => {orderProduct(data.product.data.id)}}>
                         <ShoppingCart class="w-4 h-4 mr-2" />
                         Add to Cart
