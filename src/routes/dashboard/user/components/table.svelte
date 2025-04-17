@@ -66,6 +66,7 @@
 			});
 			toast.success('Berhasil mengubah role');
 			await getUserData();
+			isLoading = false
 		} catch (error) {}
 	}
 
@@ -122,7 +123,7 @@
 											<Trash size={20} />
 											Hapus
 										</Button>
-										<Dialog.Root>
+										<Dialog.Root bind:open={isLoading}>
 											<Dialog.Trigger>
 												<Button onclick={() => setDefaultRole(user.role)} class="w-full bg-green-600">
 													<Edit size={20} />
