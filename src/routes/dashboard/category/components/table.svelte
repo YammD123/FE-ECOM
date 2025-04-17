@@ -84,6 +84,31 @@
 			isLoading = false;
 		}
     }
+
+	let isOpenEdit = $state(false);
+	let category_nameEdit = $state('');
+	async function EditCategory(id: string) {
+		try {
+			isLoading = true;
+			const res = await fetch(`${PUBLIC_API_URL_BE}/category/edit/${id}`, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					category_name: category_nameEdit
+				})
+			});
+			toast.success('Berhasil mengubah kategori');
+			await getCategoryData();
+			isOpenEdit = false;
+		} catch (error) {
+			toast.error('Gagal mengubah kategori silakan coba lagi');
+		}
+	}
+	function setDefaultCategoryName(category_name: string) {
+		category_nameEdit = category_name
+	}
 </script>
 
 <main>
@@ -133,7 +158,7 @@
 			{:else}
 				{#each filteredData as category, index (index)}
 					<Table.Row class="border-b border-gray-300">
-						<Table.Cell class="text-base">{category.createdAt}</Table.Cell>
+						<Table.Cell class="text-base">{category.createdAt.split('T')[0]}</Table.Cell>
 						<Table.Cell class="text-base">{category.category_name}</Table.Cell>
 						<Table.Cell class="text-right">
 							<DropdownMenu.Root>
@@ -150,10 +175,26 @@
 											<Trash size={20} />
 											Hapus
 										</Button>
-										<Button class="w-full bg-green-600">
-											<Edit size={20} />
-											Edit
-										</Button>
+										<Dialog.Root bind:open={isOpenEdit}>
+											<Dialog.Trigger >
+												<Button onclick={() => setDefaultCategoryName(category.category_name)} class="w-full bg-green-600">
+													<Edit size={20} />
+													Edit
+												</Button>
+											</Dialog.Trigger>
+											<Dialog.Content>
+												<Dialog.Title class="text-lg font-semibold">Edit User Role</Dialog.Title>
+												<Dialog.Description class="text-sm text-gray-500">
+													Edit role untuk mendapatkan akses di halaman
+												</Dialog.Description>
+												<div class="mt-4">
+													<form onsubmit={() => EditCategory(category.id)} class="flex flex-col gap-4">
+														<Input  bind:value={category_nameEdit} />
+														<Button disabled={isLoading} type='submit' class="bg-blue-600 text-white" variant="default">Simpan</Button>
+													</form>
+												</div>
+											</Dialog.Content>
+										</Dialog.Root>
 									</div>
 								</DropdownMenu.Content>
 							</DropdownMenu.Root>

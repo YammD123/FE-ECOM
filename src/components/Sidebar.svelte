@@ -14,6 +14,5 @@
     <div class="bottom-4 flex flex-col gap-4 absolute p-4">
         <a href="/"> <Home strokeWidth={1}/> </a>
         <a href="/profile"> <Settings strokeWidth={1}/> </a>
-        <a href="/profile"> <Settings strokeWidth={1}/> </a>
     </div>
 </div>

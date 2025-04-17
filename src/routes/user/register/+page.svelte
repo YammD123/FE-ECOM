@@ -9,10 +9,12 @@
 
 
 	let newUser = $state({userName:"" , email:"" , password:""}) 
+	let isLoading = $state(false);
 	async function register(event: any){
 		event.preventDefault();
 		
 		try {
+			isLoading = true;
 			if (!newUser.userName || !newUser.email || !newUser.password) {
 				toast.error("Tolong isi semua field")
 				return
@@ -80,7 +82,7 @@
 						placeholder="Enter your Password"
 						bind:value={newUser.password}
 					/>
-                    <Button type="submit" class="mt-4">Register</Button>
+                    <Button disabled={isLoading} type="submit" class="mt-4">Register</Button>
                     <p>Sudah memiliki akun? <a class="underline" href="/user/login">Tab sini</a></p>
 				</form>
 			</div>

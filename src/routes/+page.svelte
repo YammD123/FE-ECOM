@@ -16,7 +16,15 @@
 		getProduct();
 	});
 
-	let categori = $state('Food');
+	
+	let categoryProducts: any = $state([]);
+	async function categoryProduct() {
+		const res = await fetch(`${PUBLIC_API_URL_BE}/category`);
+		categoryProducts = await res.json();
+		console.log(categoryProducts);
+	}
+	let categori = $state('Baju-Anak');
+
 	let category: any = $state([]);
 	async function getCategory() {
 		const res = await fetch(`${PUBLIC_API_URL_BE}/category/${categori}`);
@@ -26,10 +34,11 @@
 
 	$effect(() => {
 		getCategory();
+		categoryProduct();
 	});
 
-	function handleCategoryChange(categories: string) {
-		categori = categories;
+	function handleCategoryChange(categoriesName: string) {
+		categori = categoriesName
 	}
 </script>
 
@@ -85,15 +94,15 @@
 		<div
 			class="flex flex-wrap gap-2 sm:gap-3 mb-10 justify-center sm:justify-start"
 		>
-			{#each ['Food', 'Electronic','Framework', 'Tools', 'Fushion'] as categories, index (index)}
+			{#each categoryProducts.data as categories, index (index)}
 				<Button
 					variant="ghost"
-					onclick={() => handleCategoryChange(categories)}
-					class="{categori === categories
+					onclick={() => handleCategoryChange(categories.category_name)}
+					class="{categori === categories.category_name
 						? 'bg-blue-800 text-white hover:bg-blue-900'
 						: 'bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-800'} px-5 py-2.5 rounded-full font-medium text-sm shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
 				>
-					{categories}
+					{categories.category_name}
 				</Button>
 			{/each}
 		</div>

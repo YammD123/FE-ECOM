@@ -9,7 +9,7 @@
 	>
 		<!-- Latar Gambar (Opsional) -->
 		<div
-			class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30"
+			class="absolute inset-0 bg-[url('https://repack.id/wp-content/uploads/2022/05/Cara-Jual-Pakaian-Anak-ke-Luar-Negeri.jpg')] bg-cover bg-center opacity-30"
 		></div>
 		<!-- Konten Banner -->
 		<div
@@ -41,7 +41,7 @@
 			<!-- Gambar (Opsional) -->
 			<div class="hidden md:block mt-8 md:mt-0">
 				<img
-					src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/94/MTA-134670170/brd-35040_supervice-sepatu-sneaker-pria-spatu-running-casual-import-mc107_full01-ac996c95.jpg"
+					src="https://img.lazcdn.com/g/p/76bff7cac04c9f490a83699d233d145a.png_720x720q80.png"
 					alt="Produk Unggulan"
 					class="w-64 h-64 object-cover rounded-lg shadow-lg"
 				/>

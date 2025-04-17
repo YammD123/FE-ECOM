@@ -4,10 +4,11 @@
 	import { onMount } from 'svelte';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { Ellipsis, Search, Trash } from '@lucide/svelte';
+	import { Edit, Ellipsis, Search, Trash } from '@lucide/svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { toast } from 'svelte-sonner';
 	import { Input } from '$lib/components/ui/input/index.js';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
 
 	//handle search
 	let filteredData: any = $state([]);
@@ -47,6 +48,30 @@
 			handleSearch();
 		}
 	});
+
+	let roles = $state('sa');
+
+	let isLoading = $state(false);
+	async function handleEditRole(id: string,) {
+
+		try {
+			await fetch(`${PUBLIC_API_URL_BE}/user/${id}`, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					role: roles
+				})
+			});
+			toast.success('Berhasil mengubah role');
+			await getUserData();
+		} catch (error) {}
+	}
+
+	async function setDefaultRole(role: string) {
+		roles = role
+	}
 </script>
 
 <div class=" p-4">
@@ -88,7 +113,7 @@
 									<Button variant="ghost"><Ellipsis size={20} /></Button>
 								</DropdownMenu.Trigger>
 								<DropdownMenu.Content class="mx-6">
-									<div class="flex">
+									<div class="flex flex-col gap-2">
 										<Button
 											onclick={() => deleteUser(user.id)}
 											class="w-full"
@@ -97,6 +122,26 @@
 											<Trash size={20} />
 											Hapus
 										</Button>
+										<Dialog.Root>
+											<Dialog.Trigger>
+												<Button onclick={() => setDefaultRole(user.role)} class="w-full bg-green-600">
+													<Edit size={20} />
+													Edit
+												</Button>
+											</Dialog.Trigger>
+											<Dialog.Content>
+												<Dialog.Title class="text-lg font-semibold">Edit User Role</Dialog.Title>
+												<Dialog.Description class="text-sm text-gray-500">
+													Edit role untuk mendapatkan akses di halaman
+												</Dialog.Description>
+												<div class="mt-4">
+													<form onsubmit={() => handleEditRole(user.id)} class="flex flex-col gap-4">
+														<Input  bind:value={roles} />
+														<Button disabled={isLoading} type='submit' class="bg-blue-600 text-white" variant="default">Simpan</Button>
+													</form>
+												</div>
+											</Dialog.Content>
+										</Dialog.Root>
 									</div>
 								</DropdownMenu.Content>
 							</DropdownMenu.Root>

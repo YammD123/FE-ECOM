@@ -8,9 +8,11 @@
 	import { goto } from '$app/navigation';
 
 	let loginUser = $state({email:"" , password:""})
+	let isLoading = $state(false);
 	async function login(event: any){
 		event.preventDefault();
 		try {
+			isLoading = true;
 			if (!loginUser.email || !loginUser.password) {
 				toast.error("Tolong isi semua field")
 				return
@@ -82,7 +84,7 @@
 						placeholder="Enter your Password"
 						bind:value={loginUser.password}
 					/>
-                    <Button type="submit" class="mt-4">Login</Button>
+                    <Button disabled={isLoading} type="submit" class="mt-4">Login</Button>
                     <p>Belum memiliki akun? <a class="underline" href="/user/register">Tab sini</a></p>
 				</form>
 			</div>

@@ -134,6 +134,11 @@ $effect(()=>{
 	}
 })
 
+let search: string | null = $state(null);
+async function handleSearch(e: Event) {
+	e.preventDefault();
+	goto(`/search/${search}`);
+}
 </script>
 
 <nav class="bg-gradient-to-b from-orange-500 to-red-600/90 text-white">
@@ -148,9 +153,9 @@ $effect(()=>{
 				{/if}
 			</li>
 			<li class="flex items-center gap-2">
-				<form class="flex items-center gap-2">
-					<Input class="text-black w-72" type="search" placeholder="Cari Produk" />
-					<Button variant="ghost">
+				<form onsubmit={handleSearch} class="flex items-center gap-2">
+					<Input class="text-black w-72" bind:value={search} type="search" placeholder="Cari Produk" />
+					<Button type="submit" variant="ghost">
 						<Search class="h-4 w-4" />
 					</Button>
 				</form>
