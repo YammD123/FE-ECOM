@@ -143,7 +143,7 @@ async function handleSearch(e: Event) {
 
 <nav class="bg-gradient-to-b from-orange-500 to-red-600/90 text-white">
 	<div class="flex items-center justify-between p-2">
-		<h1><a href="/" class="text-2xl font-bold">YammD</a></h1>
+		<h1><a href="/" class="text-2xl font-bold">BabyBlissShopp</a></h1>
 		<ul class="flex items-center gap-4">
 			<li>
 				{#if role == 'ADMIN'}
