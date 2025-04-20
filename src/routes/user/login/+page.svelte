@@ -52,6 +52,8 @@
 			toast.success("Login berhasil")
 		} catch (error) {
 			toast.error("Login gagal")
+		}finally{
+			isLoading = false
 		}
 	}
 </script>
@@ -60,7 +62,7 @@
 	<div class="flex h-screen w-full" transition:fade={{ duration: 500 }}>
 		<img
 			class="h-full w-1/2 object-cover"
-			src="https://images.unsplash.com/photo-1590069261209-f8e9b8642343?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1376&q=80"
+			src="/logreg/lore.jpg"
 			alt=""
 		/>
 		<div class="flex w-1/2 flex-col items-center justify-center">

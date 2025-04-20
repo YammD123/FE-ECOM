@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
 	import { page } from "$app/state";
 	import { PUBLIC_API_URL_BE } from "$env/static/public";
 	import { Button } from "$lib/components/ui/button/index.js";
@@ -88,10 +89,30 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="bg-gray-700 w-full md:w-56 h-56 md:h-96 flex flex-col justify-center items-center rounded-md">
-			<h1 class="text-xl md:text-2xl text-white font-serif">Payment</h1>
-		</div>
+		<div class="bg-gradient-to-br from-orange-600 to-orange-400 w-full md:w-56 h-56 md:h-96 flex flex-col justify-between p-6 rounded-xl shadow-lg text-white transform transition-all ">
+			<div>
+			  <h1 class="text-2xl font-serif font-semibold tracking-wide">Payment Summary</h1>
+			  <div class="mt-4 space-y-2">
+				<p class="text-sm font-medium">Product: <span class="font-normal">{data.product.data.product_name}</span></p>
+				<p class="text-sm font-medium">Price: <span class="font-normal">Rp. {data.product.data.price.toLocaleString()}</span></p>
+				<p class="text-sm font-semibold">Total: <span class="text-yellow-200">Rp. {data.product.data.price.toLocaleString()}</span></p>
+			  </div>
+				<div class="mt-4">
+				  <p class="text-sm font-medium">Metode Pembayaran:</p>
+				  <div class="flex gap-3 mt-2">
+					<img src="/icons/gopay.png" alt="Gopay" class="w-8 h-8 rounded-sm shadow-sm" />
+					<img src="/icons/visa.png" alt="Visa" class="w-8 h-8 rounded-sm shadow-sm" />
+					<img src="/icons/mastercard.png" alt="Mastercard" class="w-8 h-8 rounded-sm shadow-sm" />
+				  </div>
+				</div>
+			  
+			</div>
+			<div class="flex flex-col gap-2">
+			  <Button  variant="outline" class="border-yellow-200 text-yellow-100 hover:bg-yellow-500 hover:text-gray-900 transition-colors" onclick={() => goto(`/profile`)}>
+				Riwayat Pembelian
+			  </Button>
+			</div>
+		  </div>
 	</div>
 	<div class="flex flex-col items-center justify-center mt-16 w-full max-w-7xl">
 		<h1 class="text-3xl italic text-gray-800 font-semibold">Ulasan</h1>
